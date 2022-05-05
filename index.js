@@ -8,8 +8,10 @@ const app = express();
 const port = process.env.PORT ?? 3000;
 
 app.post("/", (request, response) => {
-  const twiml = new VoiceResponse();
+  console.log(`${request.method} - ${request.url}`);
   
+  const twiml = new VoiceResponse();
+
   twiml.say({ voice: "man" }, "One second please.");
   twiml.pause({ length: 0.2 });
 
