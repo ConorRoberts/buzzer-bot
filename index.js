@@ -5,8 +5,6 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 
 const app = express();
 
-const attempts = 3;
-
 const port = process.env.PORT || 3000;
 
 app.post("/", (request, response) => {
@@ -14,21 +12,20 @@ app.post("/", (request, response) => {
 
   const twiml = new VoiceResponse();
 
-  for (const i = 0; i < attempts; i++) {
-    // Greeting
-    twiml.say({ voice: "man" }, "Unlocking door.");
+  // Greeting
+  twiml.say({ voice: "man" }, "Unlocking door.");
 
-    twiml.dial("9");
-    twiml.dial("9");
+  twiml.play({ digits: 99, loop: 3 })
 
-    twiml.pause({ length: 2 });
-    twiml.say({ voice: "man" }, "Door should be unlocked.");
+  twiml.say({ voice: "man" }, "Door should be unlocked.");
 
-    // Delay before repeat
-    twiml.pause({ length: 3 });
+  // Delay before repeat
+  twiml.pause({ length: 10 });
+
+  if (process.env.FALLBACK_PHONE_NUMBER) {
+    twiml.dial(process.env.FALLBACK_PHONE_NUMBER);
+    twiml.say({ voice: "man" }, "Forwarding call.");
   }
-
-  twiml.say({ voice: "man" }, "Bye.");
 
   response.type("text/xml");
   response.send(twiml.toString());
