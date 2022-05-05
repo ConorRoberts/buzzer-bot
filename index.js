@@ -5,6 +5,8 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 
 const app = express();
 
+const attempts = 3;
+
 const port = process.env.PORT || 3000;
 
 app.post("/", (request, response) => {
@@ -12,16 +14,19 @@ app.post("/", (request, response) => {
 
   const twiml = new VoiceResponse();
 
-  twiml.say({ voice: "man" }, "One second please.");
-  twiml.pause({ length: 0.2 });
+  for (const i = 0; i < attempts; i++) {
+    // Greeting
+    twiml.say({ voice: "man" }, "Unlocking door.");
 
-  twiml.dial("9");
-  twiml.pause({ length: 0.2 });
-  twiml.dial("9");
-  twiml.pause({ length: 3 });
+    twiml.dial("9");
+    twiml.dial("9");
 
-  twiml.say({ voice: "man" }, "Door should be unlocked.");
-  twiml.pause({ length: 15 });
+    twiml.pause({ length: 2 });
+    twiml.say({ voice: "man" }, "Door should be unlocked.");
+
+    // Delay before repeat
+    twiml.pause({ length: 3 });
+  }
 
   twiml.say({ voice: "man" }, "Bye.");
 
