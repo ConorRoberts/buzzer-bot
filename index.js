@@ -1,5 +1,5 @@
-import express from "express";
-import twilio from "twilio";
+const express = require("express");
+const twilio = require("twilio");
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
@@ -9,7 +9,7 @@ const port = process.env.PORT ?? 3000;
 
 app.post("/", (request, response) => {
   console.log(`${request.method} - ${request.url}`);
-  
+
   const twiml = new VoiceResponse();
 
   twiml.say({ voice: "man" }, "One second please.");
