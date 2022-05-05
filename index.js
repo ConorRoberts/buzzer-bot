@@ -5,7 +5,7 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 
 const app = express();
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.post("/", (request, response) => {
   console.log(`${request.method} - ${request.url}`);
